@@ -1,0 +1,21 @@
+{
+  "age": 30,
+  "sex": "male",
+  "heightCm": 170,
+  "weightKg": 70,
+  "bmi": 24.2,
+  "smokingStatus": "never",
+  "alcoholUse": "none",
+  "activityLevel": "light",
+  "sleepHours": 7,
+  "hasDiabetes": false,
+  "hasHypertension": false,
+  "hasHeartDisease": false,
+  "hasAsthma": false,
+  "hasKidneyDisease": false,
+  "hasObesity": false,
+  "familyDiabetes": false,
+  "familyHypertension": false,
+  "familyHeartDisease": false,
+  "familyCancer": false
+}
