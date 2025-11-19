@@ -203,7 +203,8 @@ function buildPayload(state) {
 
 /* --- Main Home component --- */
 function Home() {
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  const API = process.env.REACT_APP_API_URL || "https://geneticguardianai.onrender.com";
+
    const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
