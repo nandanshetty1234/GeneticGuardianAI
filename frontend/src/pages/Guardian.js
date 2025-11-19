@@ -5,7 +5,7 @@ import "../App.css";
 import logo from "../logo.png";
 
 // API base (frontend .env -> REACT_APP_API_URL)
-const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API = process.env.REACT_APP_API_URL || "https://geneticguardianai.onrender.com";
 
 export default function Guardian() {
   const navigate = useNavigate();
