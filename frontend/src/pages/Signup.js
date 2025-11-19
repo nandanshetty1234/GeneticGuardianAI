@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import logo from "../logo.png";
 import { Eye, EyeOff } from "lucide-react";
 
+// Use REACT_APP_API_URL at build time; fallback to your deployed backend
+const API = process.env.REACT_APP_API_URL || "https://geneticguardianai.onrender.com";
+
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -21,7 +24,7 @@ function Signup() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/signup", {
+      const res = await fetch(`${API}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
@@ -30,6 +33,7 @@ function Signup() {
       const data = await res.json();
       setMessage(data.message || "Signup successful ✅");
     } catch (err) {
+      console.error("Signup error:", err);
       setMessage("⚠️ Error signing up. Try again.");
     }
   };
@@ -59,7 +63,6 @@ function Signup() {
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Username */}
             <div>
-              
               <input
                 type="text"
                 placeholder="username"
@@ -71,7 +74,6 @@ function Signup() {
 
             {/* Email */}
             <div>
-              
               <input
                 type="email"
                 placeholder="email"
@@ -83,7 +85,6 @@ function Signup() {
 
             {/* Password */}
             <div className="relative">
-              
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="password"
@@ -102,7 +103,6 @@ function Signup() {
 
             {/* Confirm Password */}
             <div className="relative">
-              
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm password"
