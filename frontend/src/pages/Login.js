@@ -10,11 +10,11 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // "success" | "error" | "info"
+  const [messageType, setMessageType] = useState(""); // "success" | "error"
   const [loading, setLoading] = useState(false);
 
+  // REMOVE API_BASE — use API variable
   const API = process.env.REACT_APP_API_URL || "https://geneticguardianai.onrender.com";
-
 
   const validate = () => {
     if (!username.trim() || !password) {
@@ -34,13 +34,12 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/login`, {
+      const res = await fetch(`${API}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: username.trim(), password }),
       });
 
-      // handle non-2xx
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
         setMessageType("error");
@@ -53,13 +52,12 @@ export default function Login() {
       setMessageType("success");
       setMessage(data.message || "Login successful ✅");
 
-      // store token (if provided) and username — do not store password
+      localStorage.setItem("username", username.trim());
+
       if (data.token) {
         localStorage.setItem("authToken", data.token);
       }
-      localStorage.setItem("username", username.trim());
 
-      // redirect after a short delay so user sees success message
       setTimeout(() => navigate("/home"), 800);
     } catch (err) {
       console.error("Login error:", err);
@@ -72,6 +70,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white flex flex-col items-center px-6 relative">
+
       {/* Header */}
       <div className="w-full relative mt-6 max-w-8xl flex items-start">
         <img src={logo} alt="Genetic GuardianAI Logo" className="h-64 w-64 object-contain" />
@@ -90,53 +89,43 @@ export default function Login() {
         <div className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-md">
           <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
 
-          <form className="space-y-4" onSubmit={handleLogin} noValidate>
+          <form className="space-y-4" onSubmit={handleLogin}>
+
             {/* Username */}
             <div>
-              <label htmlFor="username" className="sr-only">Username</label>
               <input
-                id="username"
-                name="username"
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-                aria-required="true"
               />
             </div>
 
             {/* Password */}
             <div className="relative">
-              <label htmlFor="password" className="sr-only">Password</label>
               <input
-                id="password"
-                name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-                aria-required="true"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-2 text-gray-400 hover:text-white"
-                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
 
-            {/* Submit */}
+            {/* Login Button */}
             <button
               type="submit"
-              className={`w-full py-3 rounded-lg text-lg font-semibold transition ${loading ? "bg-blue-400/70 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
               disabled={loading}
-              aria-busy={loading}
+              className={`w-full py-3 rounded-lg text-lg font-semibold transition 
+                ${loading ? "bg-blue-400/50 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
             >
               {loading ? "Logging in..." : "Login"}
             </button>
@@ -145,18 +134,19 @@ export default function Login() {
           {/* Message */}
           {message && (
             <p
-              role="status"
-              className={`mt-4 text-center font-medium ${messageType === "success" ? "text-green-400" : "text-red-400"}`}
+              className={`mt-4 text-center font-medium ${
+                messageType === "success" ? "text-green-400" : "text-red-400"
+              }`}
             >
               {message}
             </p>
           )}
 
-          {/* Redirect */}
           <p className="mt-6 text-center text-gray-400">
             Not registered?{" "}
             <Link to="/signup" className="text-blue-400 hover:underline">Sign Up</Link>
           </p>
+
         </div>
       </div>
     </div>
