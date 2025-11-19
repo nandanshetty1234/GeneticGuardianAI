@@ -13,7 +13,8 @@ export default function Login() {
   const [messageType, setMessageType] = useState(""); // "success" | "error" | "info"
   const [loading, setLoading] = useState(false);
 
-  const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  const API = process.env.REACT_APP_API_URL || "https://geneticguardianai.onrender.com";
+
 
   const validate = () => {
     if (!username.trim() || !password) {
